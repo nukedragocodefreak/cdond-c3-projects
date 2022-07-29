@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\.circleci",
+    "\\.circleci\\ansible",
+    "\\.circleci\\ansible\\roles\\configure-prometheus-node-exporter",
+    "\\.circleci\\files",
+    "\\backend\\src",
+    "\\backend\\src\\modules",
+    "\\backend\\src\\modules\\domain\\employees",
+    "\\backend\\src\\modules\\domain\\employees\\commands",
+    "\\backend\\src\\modules\\domain\\employees\\commands\\handlers"
   ],
-  "SelectedNode": "\\C:\\Users\\NoelM\\Source\\Repos\\cdond-c3-projects",
+  "SelectedNode": "\\.circleci\\files\\cloudfront.yml",
   "PreviewInSolutionExplorer": false
 }
