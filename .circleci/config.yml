@@ -134,7 +134,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - env-setup
+     # - env-setup
 
       - run:
           name: Install tar utility
