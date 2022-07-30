@@ -134,7 +134,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-
       - run:
           name: Install tar utility
           command: |
