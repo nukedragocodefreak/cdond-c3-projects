@@ -171,24 +171,31 @@ jobs:
       # Here's where you will add some code to rollback on failure
       - destroy-environment  
 
-  #configure-infrastructure:
-  #  docker:
-  #    # Docker image here that supports Ansible
-  #  steps:
-  #    # Checkout code from git
-  #    # Add ssh keys with fingerprint
-  #    # attach workspace
-  #    - run:
-  #        name: Install dependencies
-  #        command: |
-  #          # Your code here
-  #          exit 1
-  #    - run:
-  #        name: Configure server
-  #        command: |
-  #          # Your code here
-  #          exit 1
-  #    # Here's where you will add some code to rollback on failure      
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+      - image: circleci/node:13.8.0
+    steps:
+      # Checkout code from git
+      - checkout
+      - install_ansible
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - add_ssh_keys:
+          fingerprints: ["9a:ac:97:ca:1d:78:4b:91:e0:d7:48:24:54:7f:2f:ef:8a:36:09:ef"]
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: |
+            # Your code here
+            exit 1
+      - run:
+          name: Configure server
+          command: |
+            # Your code here
+            exit 1
+      # Here's where you will add some code to rollback on failure      
 
   #run-migrations:
   #  docker:
@@ -318,9 +325,6 @@ workflows:
           requires: [build-frontend]
       - deploy-infrastructure:
           requires: [test-frontend, test-backend, scan-frontend, scan-backend]
-          #filters:
-          #  branches:
-          #    only: [test-feature-branch]
       #- configure-infrastructure:
       #    requires: [deploy-infrastructure]
       #- run-migrations:
