@@ -213,7 +213,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: sleavely/node-awscli:14.x
+      - image: sleavely/node-awscli:16.x
      
     steps:
       - checkout
