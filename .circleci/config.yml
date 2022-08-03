@@ -203,7 +203,7 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
-          fingerprints: ["9a:ac:97:ca:1d:78:4b:91:e0:d7:48:24:54:7f:2f:ef:8a:36:09:ef"]
+          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
       - attach_workspace:
           at: ~/
       - run:
@@ -234,7 +234,7 @@ jobs:
   run-migrations:
     docker:
       # Docker image here that supports NodeJS
-      - image: sleavely/node-awscli:16.x
+      - image: s
      
     steps:
       - checkout
@@ -287,7 +287,9 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
+            npm install
             npm run build
+            tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
 #       # Here's where you will add some code to rollback on failure      
                     
@@ -300,7 +302,7 @@ jobs:
       - install-nodejs
       - install-ansible
       - add_ssh_keys:
-          fingerprints: ["9a:ac:97:ca:1d:78:4b:91:e0:d7:48:24:54:7f:2f:ef:8a:36:09:ef"]
+          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
       - attach_workspace:
           at: ~/
       - restore_cache:
