@@ -4,7 +4,7 @@ version: 2.1
 #  slack: circleci/slack@4.10.1
 
 commands:
-  install_ansible:
+  install-ansible:
     description: Install Ansible
     steps:
       - run:
@@ -14,7 +14,7 @@ commands:
             sudo apt install software-properties-common -y
             sudo add-apt-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible -y
-  install_nodejs:
+  install-nodejs:
     description: Install Node.js 13
     steps:
       - run:
@@ -164,11 +164,18 @@ jobs:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
-                --template-file .circleci/files/backend.yml   --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"   --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" --tags project=udapeople
+                --template-file .circleci/files/backend.yml \
+                --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+                --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+                --tags project=udapeople
       - run:
           name: Ensure front-end infrastructure exist
           command: |
-            aws cloudformation deploy  --template-file .circleci/files/frontend.yml --tags project=udapeople  --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"  --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=udapeople \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -192,7 +199,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - install_ansible
+      - install-ansible
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
@@ -258,7 +265,7 @@ jobs:
       - image: circleci/base:stable
     steps:
       - checkout
-      - install_nodejs
+      - install-nodejs
       # Checkout code from git
       - restore_cache:
           keys: [frontend-build] 
@@ -284,22 +291,46 @@ jobs:
             aws s3 cp dist "s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}" --recursive
 #       # Here's where you will add some code to rollback on failure      
                     
-  #deploy-backend:
-  #  docker:
-  #    # Docker image here that supports Ansible
-  #  steps:
-  #    # Checkout code from git
-  #    # Add ssh keys with fingerprint
-  #    # attach workspace
-  #    - run:
-  #        name: Install dependencies
-  #        command: |
-  #          # your code here
-  #    - run:
-  #        name: Deploy backend
-  #        command: |
-  #          # your code here
-  #    # Here's where you will add some code to rollback on failure  
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - install-nodejs
+      - install-ansible
+      - add_ssh_keys:
+          fingerprints: ["9a:ac:97:ca:1d:78:4b:91:e0:d7:48:24:54:7f:2f:ef:8a:36:09:ef"]
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [backend-build]
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            cd backend
+            npm install
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+            cd backend
+            npm install
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure 
+      - destroy-environment
+      - revert-migrations
 
   #smoke-test:
   #  docker:
@@ -380,8 +411,8 @@ workflows:
           requires: [configure-infrastructure]
       - deploy-frontend:
           requires: [run-migrations]
-      #- deploy-backend:
-      #    requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
       #- smoke-test:
       #    requires: [deploy-backend, deploy-frontend]
       #- cloudfront-update:
