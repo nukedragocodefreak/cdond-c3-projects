@@ -4,15 +4,6 @@ orbs:
    aws-cli: circleci/aws-cli@2.0.3
 
 commands:
-  env-setup:
-    description: AWS Env Setup
-    steps:
-      - aws-cli/setup:
-          profile-name: udapeopleaccess
-          aws-access-key-id: AWS_ACCESS_KEY_ID 
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_DEFAULT_REGION
-
   install-ansible:
     description: Install Ansible
     steps:
@@ -164,7 +155,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - env-setup
+    
       - run:
           name: Install tar utility
           command: |
