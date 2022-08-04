@@ -2,10 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\.circleci",
-    "\\.circleci\\ansible\\roles",
-    "\\.circleci\\ansible\\roles\\deploy\\tasks",
+    "\\.circleci\\ansible",
     "\\.circleci\\files"
   ],
-  "SelectedNode": "\\.circleci\\files\\frontend.yml",
+  "SelectedNode": "\\.circleci\\config.yml",
   "PreviewInSolutionExplorer": false
 }
