@@ -208,7 +208,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - install-ansible
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
