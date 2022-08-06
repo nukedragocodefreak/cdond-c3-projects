@@ -2,11 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\.circleci",
-    "\\.circleci\\ansible\\roles",
-    "\\.circleci\\ansible\\roles\\configure-server",
-    "\\.circleci\\ansible\\roles\\configure-server\\tasks",
+    "\\.circleci\\ansible",
+    "\\.circleci\\ansible\\roles\\configure-prometheus-node-exporter\\tasks",
+    "\\backend",
     "\\frontend"
   ],
-  "SelectedNode": "\\frontend",
+  "SelectedNode": "\\backend\\package.json",
   "PreviewInSolutionExplorer": false
 }
