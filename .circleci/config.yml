@@ -170,14 +170,7 @@ jobs:
                 --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                 --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
                 --tags project=udapeople
-      - run:
-          name: Ensure front-end infrastructure exists
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --tags project=udapeople \
-              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
+
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -202,7 +195,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
+          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
       - attach_workspace:
           at: ~/
       - run:
@@ -310,7 +303,7 @@ jobs:
       - install-nodejs
       - install-ansible
       - add_ssh_keys:
-          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
+          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
       - attach_workspace:
           at: ~/
       - restore_cache:
