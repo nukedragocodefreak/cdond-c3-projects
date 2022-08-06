@@ -27,7 +27,7 @@
     "premigrations": "npm run build",
     "migrations": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:run",
     "migrations-win": "ts-node node_modules/typeorm/cli.js migration:run",
-    "premigrations:revert": "npm run build",
+    //"premigrations:revert": "npm run build",
     "migrations:revert": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:revert",
     "update:domain": "npm update @kiwihr/kiwi-domain"
   },
