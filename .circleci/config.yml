@@ -264,6 +264,7 @@ jobs:
             cd backend
             npm install
             npm audit fix  --force
+            npm run build
             npm run migrations > migrations_dump.txt
       - run:
           name: print migrations text
