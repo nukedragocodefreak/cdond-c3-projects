@@ -219,7 +219,7 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
-          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
+          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
       - attach_workspace:
           at: ~/
 
@@ -298,7 +298,7 @@ jobs:
       - install-nodejs
       # Checkout code from git
       - add_ssh_keys:
-          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
+          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
       - attach_workspace:
           at: ~/
       - run:
@@ -343,7 +343,7 @@ jobs:
       - install-nodejs
       - install-ansible
       - add_ssh_keys:
-          fingerprints: ["05:7a:b8:2a:5f:89:ac:0d:60:83:f8:02:f2:ca:35:33"]
+          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
       - attach_workspace:
           at: ~/
       - restore_cache:
