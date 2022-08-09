@@ -332,7 +332,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: circleci/node:13.8.0
+      - image: cimg/python:3.10.5-node
     steps:
       - checkout
 
