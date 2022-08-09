@@ -219,7 +219,7 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - add_ssh_keys:
-          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
+          fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
           at: ~/
 
@@ -297,7 +297,7 @@ jobs:
       - checkout
       # Checkout code from git
       - add_ssh_keys:
-          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
+          fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
           at: ~/
       - run:
@@ -336,12 +336,12 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: circleci/node:13.8.0
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - install-nodejs
       - add_ssh_keys:
-          fingerprints: ["2a:1e:ab:c1:f5:5e:20:a3:32:0c:bc:a4:4a:b1:0a:4c"]
+          fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
           at: ~/
       - restore_cache:
