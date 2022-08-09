@@ -346,6 +346,14 @@ jobs:
       # Add ssh keys with fingerprint
       # attach workspace
       - run:
+          name: Install Ansible
+          command: |
+            pip install ansible
+      - run:
+          name: Install AWS CLI
+          command: |
+            pip --no-cache-dir install --upgrade awscli
+      - run:
           name: Install dependencies
           command: |
             # your code here
