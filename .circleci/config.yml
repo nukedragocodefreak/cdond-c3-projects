@@ -1,7 +1,10 @@
 version: 2.1
 
-orbs: 
-   aws-cli: circleci/aws-cli@3.1.1
+orbs:
+  slack: circleci/slack@4.10.1
+  node: circleci/node@5.0.2
+  python: circleci/python@2.0.3
+  aws-cli: circleci/aws-cli@3.1.1
 
 commands:
     
@@ -148,8 +151,9 @@ jobs:
             command: |
               cd backend
               npm install
-              npm audit fix --audit-level=critical --force
-              #npm audit --audit-level=critical
+              npm audit fix --force --audit-level=critical
+              npm audit fix --force --audit-level=critical
+              npm audit --audit-level=critical
 
   deploy-infrastructure:
     docker:
@@ -291,7 +295,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image:  amazon/aws-cli
+      - image: cimg/python:3.10.5-node
     steps:
       - checkout
       - run:
@@ -365,7 +369,7 @@ jobs:
           command: |
             # your code here
             cd backend
-            npm install --force
+            npm install
             npm run build
             cd ..
             # Zip the directory
