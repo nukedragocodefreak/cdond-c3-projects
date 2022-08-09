@@ -356,12 +356,12 @@ jobs:
       # Checkout code from git
       # Add ssh keys with fingerprint
       # attach workspace
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-            cd backend
-            npm install
+      #- run:
+      #    name: Install dependencies
+      #    command: |
+      #      # your code here
+      #      cd backend
+      #      npm install
       - run:
           name: Deploy backend
           command: |
