@@ -321,7 +321,7 @@ jobs:
             cat frontend/.env
       - run: 
           name: Deploy frontend objects
-          command: |ansible-playbook
+          command: |
             cd frontend
             npm install 
             npm run build
