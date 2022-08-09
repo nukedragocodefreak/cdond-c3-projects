@@ -306,10 +306,10 @@ jobs:
       #    name: Install Ansible
       #    command: |
       #      pip install ansible
-      - run:
-          name: Install AWS CLI
-          command: |
-            pip --no-cache-dir install --upgrade awscli
+      #- run:
+      #    name: Install AWS CLI
+      #    command: |
+      #      pip --no-cache-dir install --upgrade awscli
       - run:
           name: Get backend url
           command: |
