@@ -291,7 +291,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image:  python:3.7-alpine3.11
+      - image:  amazon/aws-cli 
     steps:
       - checkout
       - add_ssh_keys:
@@ -306,19 +306,6 @@ jobs:
           name: Install AWS CLI
           command: |
             pip --no-cache-dir install --upgrade awscli
-      #- run:
-         #name: Install tar gzip
-          #command: |
-            #yum install -y tar gzip
-      #- node/install:
-          #install-yarn: true
-          #ode-version: '16.13'
-      #- node/install-packages:
-          #cache-path: ~/project/node_modules
-          #override-ci-command: npm install
-          #app-dir: /frontend
-      #- run: sudo npm install -g npm@latest
-      #- run: npm run test
       - run:
           name: Get backend url
           command: |
@@ -340,13 +327,15 @@ jobs:
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
-                    
+      - destroy-environment 
+      
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
       - image: python:3.7-alpine3.11
     steps:
       - checkout
+
       - add_ssh_keys:
           fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
@@ -377,7 +366,7 @@ jobs:
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure 
-      #- destroy-environment
+      - destroy-environment
       #- revert-migrations
 
   smoke-test:
