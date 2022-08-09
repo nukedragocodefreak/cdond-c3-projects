@@ -298,6 +298,11 @@ jobs:
           fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
           at: ~/
+
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip
       - run:
           name: Install Ansible
           command: |
@@ -332,7 +337,7 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-      - image: python:3.7-alpine3.11
+      - image: circleci/node:13.8.0
     steps:
       - checkout
 
@@ -342,9 +347,7 @@ jobs:
           at: ~/
       - restore_cache:
           keys: [backend-build]
-      # Checkout code from git
-      # Add ssh keys with fingerprint
-      # attach workspace
+
       - run:
           name: Install dependencies
           command: |
