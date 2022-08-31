@@ -388,10 +388,10 @@ jobs:
             # export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
             # export TYPEORM_MIGRATIONS=./migrations/*.ts
 
-           cd .circleci/ansible
-          echo "Contents  of the inventory.txt file is -------"
-          cat inventory.txt
-          ansible-playbook -i inventory.txt deploy-backend.yml
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
       - revert-migrations:
           to: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
