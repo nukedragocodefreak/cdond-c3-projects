@@ -543,12 +543,12 @@ workflows:
       - cloudfront-update:
           requires:
             - "smoke-test"
-      - cleanup:
-          requires:
-            - cloudfront-update
-      - success_notifications:
-          requires:
-            - cleanup
-          context:
-            - org-global 
-            - SlackNotification
+      # - cleanup:
+      #     requires:
+      #       - cloudfront-update
+      # - success_notifications:
+      #     requires:
+      #       - cleanup
+      #     context:
+      #       - org-global 
+      #       # - SlackNotification
