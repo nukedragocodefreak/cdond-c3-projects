@@ -336,7 +336,7 @@ jobs:
 
   deploy-backend:
     docker:
-      - image: cimg/python:3.10.5-node
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -352,7 +352,7 @@ jobs:
           command: |
             pip3 install --upgrade awscli
       - run:
-          name: nstall dependencies - node
+          name: Install dependencies - node
           command: |
             apk add --update nodejs npm
             node -v
