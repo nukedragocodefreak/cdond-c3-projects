@@ -521,7 +521,7 @@ workflows:
           filters:
             branches:
               only: master
-      - configure-infrastructure:35847
+      - configure-infrastructure:
           requires:
             - "create-infrastructure"
       - run-migrations:
