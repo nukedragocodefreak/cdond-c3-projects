@@ -332,55 +332,63 @@ jobs:
       - revert-migrations:
           to: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
-      #- failure_notification   ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
+      #- failure_notification 
 
   deploy-backend:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: cimg/python:3.10.5-node
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ['57:e4:e8:c3:d0:0b:18:b9:75:58:ed:dc:87:fa:18:fe']
+          fingerprints: ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          key: backend-node-modules
       - run:
-          name: Install dependencies - awscli
-          command: pip3 install --upgrade awscli
-      - run:
-          name: Install dependencies - node
+          name: Install Ansible
           command: |
-            apk add --update nodejs npm
-            node -v
+            pip install ansible
       - run:
-          name: Install dependencies - ansible, openssh
+          name: Install AWS CLI
           command: |
-            apk add --update ansible openssh
-      - run:
-          name: Deploy backend
+            pip --no-cache-dir install --upgrade awscli
+      #- run:
+          #name: Install tar gzip
+          #command: |
+            #yum install -y tar gzip 
+      #- node/install:
+          #install-yarn: true
+          #node-version: '16.13'
+      #- node/install-packages:
+          #cache-path: ~/project/node_modules
+          #override-ci-command: npm install
+          #app-dir: /backend
+      #- run: sudo npm install -g npm@latest
+      #- run: npm run test
+      - run: 
+          name: Install dependencies
           command: |
             cd backend
             npm install
+      - run:
+          name: Package backend
+          command: |
+            cd backend
             npm run build
-            cd ..
-
-            echo "---- Remove node_modules before archiving, to be installed later using ansible -----"
-            rm -rf backend/node_modules
-
-            echo "----- archive folder -----"
             tar -C backend -czvf artifact.tar.gz .
+      - run:
+          name: Deploy backend
+          command: |
+            export TYPEORM_MIGRATIONS_DIR=./migrations
+            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
+            export TYPEORM_MIGRATIONS=./migrations/*.ts
 
-            echo "---- Contents of the inventory.txt file -------"
             cd .circleci/ansible
             cat inventory.txt
-
-            echo "---- Run ansible ----"
-            ansible-playbook -e "ansible_python_interpreter=/usr/bin/python3" -i inventory.txt deploy-backend.yml
-
-     - revert-migrations:
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      - revert-migrations:
           to: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
+      #- failure_notification 
 
   smoke-test:
     docker: 
@@ -513,7 +521,7 @@ workflows:
           filters:
             branches:
               only: master
-      - configure-infrastructure:
+      - configure-infrastructure:35847
           requires:
             - "create-infrastructure"
       - run-migrations:
