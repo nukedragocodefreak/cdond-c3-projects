@@ -350,7 +350,16 @@ jobs:
       - run:
           name: Install AWS CLI
           command: |
-            pip --no-cache-dir install --upgrade awscli
+            pip3 install --upgrade awscli
+      - run:
+          name: nstall dependencies - node
+          command: |
+            apk add --update nodejs npm
+            node -v
+      - run:
+          name: Install dependencies - ansible, openssh
+          command: |
+            apk add --update ansible openssh
       #- run:
           #name: Install tar gzip
           #command: |
@@ -364,27 +373,37 @@ jobs:
           #app-dir: /backend
       #- run: sudo npm install -g npm@latest
       #- run: npm run test
-      - run: 
-          name: Install dependencies
-          command: |
-            cd backend
-            npm install
-      - run:
-          name: Package backend
-          command: |
-            cd backend
-            npm run build
-            tar -C backend -czvf artifact.tar.gz .
+      # - run: 
+      #     name: Install dependencies
+      #     command: |
+      #       cd backend
+      #       npm install
+      # - run:
+      #     name: Package backend
+      #     command: |
+      #       cd backend
+      #       npm run build
+      #       tar -C backend -czvf artifact.tar.gz .
       - run:
           name: Deploy backend
           command: |
-            export TYPEORM_MIGRATIONS_DIR=./migrations
-            export TYPEORM_ENTITIES=./modules/domain/**/*.entity{.ts,.js}
-            export TYPEORM_MIGRATIONS=./migrations/*.ts
+           cd backend
+            npm install
+            npm run build
+            cd ..
 
+            echo "---- Remove node_modules before archiving, to be installed later using ansible -----"
+            rm -rf backend/node_modules
+
+            echo "----- archive folder -----"
+            tar -C backend -czvf artifact.tar.gz .
+
+            echo "---- Contents of the inventory.txt file -------"
             cd .circleci/ansible
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml
+
+            echo "---- Run ansible ----"
+            ansible-playbook -e "ansible_python_interpreter=/usr/bin/python3" -i inventory.txt deploy-backend.yml
       - revert-migrations:
           to: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
