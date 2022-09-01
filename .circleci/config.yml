@@ -334,13 +334,13 @@ jobs:
       - destroy-environment
       #- failure_notification   ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
 
-  deploy-backend:
+deploy-backend:
     docker:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints:  ["d5:5e:d0:59:ac:50:5f:f9:4c:f6:86:c1:d6:4e:5c:fa"]
+          fingerprints: ['57:e4:e8:c3:d0:0b:18:b9:75:58:ed:dc:87:fa:18:fe']
       - attach_workspace:
           at: ~/
       - restore_cache:
@@ -360,26 +360,27 @@ jobs:
       - run:
           name: Deploy backend
           command: |
-              cd backend
-              npm install 
-              npm run build
-              cd ..
+            cd backend
+            npm install
+            npm run build
+            cd ..
 
-              echo "---- Remove node_modules before archiving, to be installed later using ansible -----"
-              rm -rf backend/node_modules
-              echo "----- archive folder -----"
-              tar -C backend -czvf artifact.tar.gz .
-              echo "---- Contents of the inventory.txt file -------"
-              cd .circleci/ansible
-              cat inventory.txt
+            echo "---- Remove node_modules before archiving, to be installed later using ansible -----"
+            rm -rf backend/node_modules
 
-              echo "---- Run ansible ----"
-              ansible-playbook -e "ansible_python_interpreter=/usr/bin/python3" -i inventory.txt deploy-backend.yml
-      - destroy-environment:
-          
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      #- failure_notification 
+            echo "----- archive folder -----"
+            tar -C backend -czvf artifact.tar.gz .
+
+            echo "---- Contents of the inventory.txt file -------"
+            cd .circleci/ansible
+            cat inventory.txt
+
+            echo "---- Run ansible ----"
+            ansible-playbook -e "ansible_python_interpreter=/usr/bin/python3" -i inventory.txt deploy-backend.yml
+
+     - revert-migrations:
+          to: ${CIRCLE_WORKFLOW_ID:0:7}
+      - destroy-environment
 
   smoke-test:
     docker: 
